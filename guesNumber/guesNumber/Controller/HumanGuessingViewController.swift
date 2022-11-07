@@ -19,10 +19,14 @@ class HumanGuessingViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         secretNumber = Int.random(in: (1...100))
-        print(secretNumber)
         guessTextField.delegate = self
+        guessTextField.keyboardType = .decimalPad
+        
+        
+        print(secretNumber)
+        
         computerAnswerLabel.isHidden = true
-        // Do any additional setup after loading the view.
+        setToolbar()
     }
     
     @IBAction func buttonAction(_ sender: Any) {
@@ -36,13 +40,31 @@ class HumanGuessingViewController: UIViewController, UITextFieldDelegate {
                 myTries += 1
                 computerAnswerLabel.text = "Нет мое число больше вашего"
                 computerAnswerLabel.isHidden = false
+            guessTextField.text = nil
             }
         else if num > secretNumber {
                 myTries += 1
                 computerAnswerLabel.text = "Нет мое число меньше вашего"
                 computerAnswerLabel.isHidden = false
+            guessTextField.text = nil
             }
     }
+    
+    func setToolbar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(doneClicked))
+        toolBar.setItems([doneButton], animated: false)
+
+        guessTextField.inputAccessoryView = toolBar
+    }
+
+    @objc func doneClicked() {
+        guessTextField.resignFirstResponder()
+        view.endEditing(true)
+}
+    
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if !textField.text!.isEmpty,
@@ -68,4 +90,22 @@ class HumanGuessingViewController: UIViewController, UITextFieldDelegate {
         winnerVC.humanTries = myTries
     }
 
+}
+
+extension UIViewController {
+    
+//    func setToolbar(textField: UITextField) {
+//        let toolBar = UIToolbar()
+//        toolBar.sizeToFit()
+//
+//        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(doneClicked(textField)))
+//        toolBar.setItems([doneButton], animated: false)
+//
+//        textField.inputAccessoryView = toolBar
+//    }
+//
+//    @objc func doneClicked(_ textField: UITextField) {
+//        textField.resignFirstResponder()
+//        view.endEditing(true)
+//}
 }

@@ -20,18 +20,35 @@ class ChooseNumberViewController: UIViewController, UITextFieldDelegate {
         acceptButton.isEnabled = false
         // Do any additional setup after loading the view.
         navigationController?.isNavigationBarHidden = true
+        setToolbar()
     }
     
+    func setToolbar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(doneClicked))
+        toolBar.setItems([doneButton], animated: false)
+        
+        numberTextField.inputAccessoryView = toolBar
+    }
+    
+    @objc func doneClicked() {
+        numberTextField.resignFirstResponder()
+        view.endEditing(true)
+        if numberTextField.text!.count > 2 {
+            numberTextField.text = "100"
+        }
+}
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if !textField.text!.isEmpty,
-            let number = Int(textField.text!),
-           (1...100).contains(number)
-        {
-            acceptButton.isEnabled = true
-        } else {
+        guard let text = textField.text,
+                !text.isEmpty
+        else {
             acceptButton.isEnabled = false
+            return true
         }
+            acceptButton.isEnabled = true
         return true
     }
     // MARK: - Navigation
