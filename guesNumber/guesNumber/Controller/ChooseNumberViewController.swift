@@ -38,6 +38,8 @@ class ChooseNumberViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
         if numberTextField.text!.count > 2 {
             numberTextField.text = "100"
+        } else if numberTextField.text!.count == 1 {
+            acceptButton.isEnabled = true
         }
 }
     
